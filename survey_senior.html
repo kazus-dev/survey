@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マックスプロデュース 社内アンケート｜社歴が長いメンバー向け</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --text: #1a1916;
+    --text2: #6b6a65;
+    --text3: #a09f9a;
+    --border: rgba(26,25,22,0.12);
+    --border2: rgba(26,25,22,0.22);
+    --accent: #1a4a2e;
+    --accent-fg: #ffffff;
+    --danger: #c0392b;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 40px 16px 80px; }
+  .page-wrap { max-width: 680px; margin: 0 auto; }
+  .hero { margin-bottom: 36px; }
+  .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+  .hero-title { font-family: 'DM Serif Display', serif; font-size: 34px; line-height: 1.2; color: var(--text); margin-bottom: 12px; }
+  .hero-title span { font-style: italic; color: var(--accent); }
+  .hero-desc { font-size: 14px; color: var(--text2); line-height: 1.7; max-width: 520px; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: #e6f0e8; color: var(--accent); font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px; }
+  .gas-bar { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+  .gas-icon { width: 36px; height: 36px; flex-shrink: 0; background: #e8f5ec; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .gas-icon svg { width: 18px; height: 18px; }
+  .gas-content { flex: 1; min-width: 0; }
+  .gas-label { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+  .gas-row { display: flex; gap: 8px; }
+  .gas-row input { flex: 1; min-width: 0; border: 0.5px solid var(--border2); border-radius: 8px; padding: 7px 10px; font-size: 13px; font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: var(--bg); }
+  .gas-row input:focus { outline: none; border-color: var(--accent); }
+  .gas-save { padding: 7px 14px; font-size: 13px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; background: var(--accent); color: var(--accent-fg); border: none; border-radius: 8px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; flex-shrink: 0; transition: background 0.3s; }
+  .dot.on { background: #4caf7d; }
+  .form-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .section { padding: 24px 28px; border-bottom: 0.5px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 18px; }
+  .section-tag::before { content: ''; width: 18px; height: 1px; background: var(--text3); display: block; }
+  .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .name-grid { grid-template-columns: 1fr; } }
+  .field-label { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; display: block; }
+  .req { color: var(--danger); margin-left: 2px; }
+  input[type="text"], textarea { width: 100%; border: 0.5px solid var(--border2); border-radius: 8px; padding: 9px 12px; font-size: 14px; font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: var(--bg); transition: border-color 0.15s, background 0.15s; }
+  input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--accent); background: var(--surface); }
+  textarea { resize: vertical; min-height: 78px; line-height: 1.7; }
+  textarea.short { min-height: 54px; }
+  textarea.tall { min-height: 100px; }
+  .q { margin-bottom: 20px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .q-num { width: 22px; height: 22px; border-radius: 50%; border: 0.5px solid var(--border2); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: var(--text3); flex-shrink: 0; margin-top: 1px; background: var(--surface); }
+  .q-text { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.55; }
+  .score-block { margin-top: 8px; }
+  .score-row { display: flex; align-items: center; gap: 14px; }
+  .score-edge { font-size: 12px; color: var(--text3); flex-shrink: 0; }
+  input[type="range"] { flex: 1; height: 4px; cursor: pointer; -webkit-appearance: none; appearance: none; background: var(--border2); border-radius: 2px; border: none; padding: 0; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,0.18); }
+  .score-display { font-size: 22px; font-weight: 700; color: var(--text); min-width: 54px; text-align: right; font-family: 'DM Serif Display', serif; }
+  .submit-area { padding: 24px 28px; }
+  .err { font-size: 13px; color: var(--danger); margin-bottom: 12px; display: none; }
+  .submit-btn { width: 100%; padding: 14px; font-size: 15px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; background: var(--accent); color: var(--accent-fg); border: none; border-radius: var(--radius); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.85; }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin .65s linear infinite; display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .success-wrap { display: none; padding: 48px 28px; text-align: center; }
+  .success-icon { width: 56px; height: 56px; border-radius: 50%; background: #e6f0e8; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+  .success-icon svg { width: 26px; height: 26px; }
+  .success-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text); margin-bottom: 8px; }
+  .success-desc { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .progress-bar-bg { height: 2px; background: var(--border); border-radius: 1px; margin-bottom: 8px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 1px; width: 0%; transition: width 0.4s ease; }
+  .progress-text { font-size: 12px; color: var(--text3); text-align: right; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+  <div class="hero">
+    <div class="hero-eyebrow">Max Produce — Internal Survey 2026</div>
+    <div class="badge">社歴が長いメンバー向け</div>
+    <h1 class="hero-title">社内アンケート<br><span>Senior</span></h1>
+    <p class="hero-desc">長く関わってきたからこそ見えている変化・蓄積・課題をお聞かせください。あなたの正直な意見が会社をより良くします。</p>
+  </div>
+
+  <div class="gas-bar">
+    <div class="gas-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" fill="#34a853" opacity="0.9"/><path d="M5.5 9h7M5.5 11.5h5M5.5 6.5h7" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+    <div class="gas-content">
+      <div class="gas-label">Googleスプレッドシート連携 — GASデプロイURLを入力</div>
+      <div class="gas-row">
+        <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/〇〇〇/exec">
+        <button class="gas-save" onclick="saveUrl()">保存</button>
+      </div>
+    </div>
+    <div class="dot" id="dot"></div>
+  </div>
+
+  <div class="form-card" id="formCard">
+    <div style="padding: 20px 28px 0;">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 / 15 入力済み</div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">回答者情報</div>
+      <div class="name-grid">
+        <div><label class="field-label" for="name">お名前<span class="req">*</span></label><input type="text" id="name" placeholder="山田 太郎" oninput="updateProgress()"></div>
+        <div><label class="field-label" for="dept">部署・役職（任意）</label><input type="text" id="dept" placeholder="営業部 / 5年目" oninput="updateProgress()"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">入社当時との比較</div>
+      <div class="q"><div class="q-head"><span class="q-num">1</span><span class="q-text">入社当時のマックスプロデュースに対する印象を教えてください</span></div><textarea id="q1" placeholder="入社当時に抱いていたイメージや期待感など" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">2</span><span class="q-text">入社後、時間をかけてポジティブに変わっていったマックスプロデュースへの印象があれば教えてください</span></div><textarea id="q2" placeholder="時間とともに良くなっていったと感じること" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">3</span><span class="q-text">入社後、時間をかけてネガティブに変わっていったマックスプロデュースへの印象があれば教えてください</span></div><textarea id="q3" placeholder="時間とともに気になるようになったこと" oninput="updateProgress()"></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">会社の言語化</div>
+      <div class="q"><div class="q-head"><span class="q-num">4</span><span class="q-text">マックスプロデュースを「一言or一文」で表すとどんな言葉になりますか？</span></div><textarea id="q4" class="short" placeholder="例：「本気でやりきる集団」など" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">5</span><span class="q-text">マックスプロデュースのカルチャーで、昔と比べて変わったこと・変わっていないことは何ですか？</span></div><textarea id="q5" placeholder="変わったこと：〇〇〇&#10;変わっていないこと：〇〇〇" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">6</span><span class="q-text">業務における「こだわり」や「勝ちパターン」は何ですか？また、それは入社当時から変化しましたか？</span></div><textarea id="q6" placeholder="現在のこだわり・勝ちパターンと、その変化" oninput="updateProgress()"></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">評価される人・されない人</div>
+      <div class="q"><div class="q-head"><span class="q-num">7</span><span class="q-text">評価される人に共通する「姿勢」「考え方」は何ですか？</span></div><textarea id="q7" placeholder="活躍している人に共通するマインドセット・行動特性" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">8</span><span class="q-text">評価されない人に共通する「姿勢」「考え方」は何ですか？</span></div><textarea id="q8" placeholder="成長が止まっている人や成果が出にくい人の傾向" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">9</span><span class="q-text">長く働くなかで、あなたが個人的に最も大切にするようになった「姿勢」「考え方」は何ですか？</span></div><textarea id="q9" placeholder="経験を重ねて気づいた、仕事のコアとなる価値観" oninput="updateProgress()"></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">現状評価と改善</div>
+      <div class="q">
+        <div class="q-head"><span class="q-num">10</span><span class="q-text">理想のマックスプロデュースを100点とした場合、現状は何点ですか？</span></div>
+        <div class="score-block"><div class="score-row">
+          <span class="score-edge">0点</span>
+          <input type="range" min="0" max="100" step="1" value="70" id="score" oninput="document.getElementById('scoreDisp').textContent=this.value+'点'; updateProgress()">
+          <span class="score-edge">100点</span>
+          <div class="score-display" id="scoreDisp">70点</div>
+        </div></div>
+      </div>
+      <div class="q"><div class="q-head"><span class="q-num">11</span><span class="q-text">その差分の要因は何ですか？入社当時と比べてどう変化しましたか？</span></div><textarea id="q11" placeholder="理想との差が生まれている背景・原因と、その変化" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">12</span><span class="q-text">それはどのようにすれば解消することができますか？</span></div><textarea id="q12" placeholder="具体的な改善アイデア・アクション" oninput="updateProgress()"></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">未来へのビジョン</div>
+      <div class="q"><div class="q-head"><span class="q-num">13</span><span class="q-text">長く関わってきたからこそ感じる、マックスプロデュースの「本質的な強み」と「構造的な課題」は何ですか？</span></div><textarea id="q13" placeholder="強み：〇〇〇&#10;課題：〇〇〇" oninput="updateProgress()"></textarea></div>
+      <div class="q"><div class="q-head"><span class="q-num">14</span><span class="q-text">今のマックスプロデュースが「捨てるべき習慣」「新しく取り入れるべき思考・行動」はそれぞれ何ですか？</span></div><textarea id="q14" placeholder="捨てるべき習慣：〇〇〇&#10;取り入れるべき行動：〇〇〇" oninput="updateProgress()"></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-tag">自由記述</div>
+      <div class="q"><div class="q-head"><span class="q-num">15</span><span class="q-text">その他、長年の経験から伝えたいこと・後輩へのメッセージがあれば教えてください</span></div><textarea id="q15" class="tall" placeholder="どんなことでも、自由にどうぞ" oninput="updateProgress()"></textarea></div>
+    </div>
+
+    <div class="submit-area">
+      <div class="err" id="errMsg"></div>
+      <button class="submit-btn" id="subBtn" onclick="submitForm()">
+        <span id="btnLabel">回答を送信する</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </div>
+
+    <div class="success-wrap" id="successWrap">
+      <div class="success-icon"><svg viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="13" fill="#34a853" opacity="0.15"/><path d="M7.5 13l4 4 7-7" stroke="#1a6b35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="success-title">送信が完了しました</div>
+      <div class="success-desc">ご回答ありがとうございました。<br>内容はスプレッドシートに記録されました。</div>
+    </div>
+  </div>
+</div>
+<script>
+  let gasUrl = '';
+  const PRESET_GAS_URL = 'https://script.google.com/macros/s/AKfycbxGw8NCC71TqlsHJaHvp86tPAjE3EKF1M3IrjxstpBzKsXWNS0hO5JTfPJRH6EuPtq5/exec';
+  window.addEventListener('DOMContentLoaded', () => {
+    if (PRESET_GAS_URL) { gasUrl = PRESET_GAS_URL; document.getElementById('gasUrl').value = PRESET_GAS_URL; document.getElementById('dot').classList.add('on'); }
+    updateProgress();
+  });
+  function saveUrl() {
+    const v = document.getElementById('gasUrl').value.trim();
+    if (!v.startsWith('https://script.google.com')) { alert('正しいGASのURLを入力してください。'); return; }
+    gasUrl = v; document.getElementById('dot').classList.add('on');
+  }
+  const ids = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q11','q12','q13','q14','q15'];
+  function updateProgress() {
+    let filled = 0;
+    ids.forEach(id => { if (document.getElementById(id).value.trim()) filled++; });
+    if (document.getElementById('name').value.trim()) filled++;
+    const pct = Math.round((filled / 15) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = filled + ' / 15 入力済み';
+  }
+  async function submitForm() {
+    const name = document.getElementById('name').value.trim();
+    if (!name) { showErr('お名前を入力してください。'); document.getElementById('name').focus(); return; }
+    if (!gasUrl) { showErr('GASのURLが設定されていません。'); return; }
+    const payload = {
+      submittedAt: new Date().toLocaleString('ja-JP'), type: '社歴が長いメンバー向け',
+      name, dept: document.getElementById('dept').value.trim(),
+      q1: document.getElementById('q1').value.trim(), q2: document.getElementById('q2').value.trim(),
+      q3: document.getElementById('q3').value.trim(), q4: document.getElementById('q4').value.trim(),
+      q5: document.getElementById('q5').value.trim(), q6: document.getElementById('q6').value.trim(),
+      q7: document.getElementById('q7').value.trim(), q8: document.getElementById('q8').value.trim(),
+      q9: document.getElementById('q9').value.trim(), score: document.getElementById('score').value,
+      q11: document.getElementById('q11').value.trim(), q12: document.getElementById('q12').value.trim(),
+      q13: document.getElementById('q13').value.trim(), q14: document.getElementById('q14').value.trim(),
+      q15: document.getElementById('q15').value.trim()
+    };
+    setLoading(true); hideErr();
+    try {
+      await fetch(gasUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      document.querySelectorAll('.section, .submit-area').forEach(el => el.style.display = 'none');
+      document.getElementById('successWrap').style.display = 'block';
+    } catch(e) { showErr('送信に失敗しました。URLを確認してください。'); setLoading(false); }
+  }
+  function setLoading(on) { document.getElementById('subBtn').disabled = on; document.getElementById('spinner').style.display = on ? 'block' : 'none'; document.getElementById('btnLabel').textContent = on ? '送信中...' : '回答を送信する'; }
+  function showErr(msg) { const e = document.getElementById('errMsg'); e.textContent = msg; e.style.display = 'block'; }
+  function hideErr() { document.getElementById('errMsg').style.display = 'none'; }
+</script>
+</body>
+</html>
